@@ -43,6 +43,7 @@ public class MutablePropertySources implements PropertySources {
 
 	private final Log logger;
 
+	// CopyOnWriteArrayList 属性资源，写少读多的场景，读写分离的思想
 	private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<>();
 
 

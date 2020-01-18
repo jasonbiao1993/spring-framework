@@ -72,9 +72,12 @@ public class StandardEnvironment extends AbstractEnvironment {
 	 * @see AbstractEnvironment#customizePropertySources(MutablePropertySources)
 	 * @see #getSystemProperties()
 	 * @see #getSystemEnvironment()
+	 * 初始化环境
 	 */
 	@Override
 	protected void customizePropertySources(MutablePropertySources propertySources) {
+		// MutablePropertySources， PropertiesPropertySource， SystemEnvironmentPropertySource
+		// 都实现PropertySource， 接口，用户互相转化
 		propertySources.addLast(
 				new PropertiesPropertySource(SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, getSystemProperties()));
 		propertySources.addLast(

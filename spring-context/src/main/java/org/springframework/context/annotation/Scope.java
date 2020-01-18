@@ -80,6 +80,12 @@ public @interface Scope {
 	 * @see org.springframework.web.context.WebApplicationContext#SCOPE_REQUEST
 	 * @see org.springframework.web.context.WebApplicationContext#SCOPE_SESSION
 	 * @see #value
+	 * (scopeName=ConfigurableBeanFactory.SCOPE_PROTOTYPE)这个是说在每次注入的时候回自动创建一个新的bean实例
+	 * (scopeName=ConfigurableBeanFactory.SCOPE_SINGLETON)单例模式，在整个应用中只能创建一个实例
+	 * (scopeName=WebApplicationContext.SCOPE_GLOBAL_SESSION)全局session中的一般不常用
+	 * (scopeName=WebApplicationContext.SCOPE_APPLICATION)在一个web应用中只创建一个实例
+	 * (scopeName=WebApplicationContext.SCOPE_REQUEST)在一个请求中创建一个实例
+	 * (scopeName=WebApplicationContext.SCOPE_SESSION)每次创建一个会话中创建一个实例
 	 */
 	@AliasFor("value")
 	String scopeName() default "";
@@ -92,6 +98,9 @@ public @interface Scope {
 	 * has been configured at the component-scan instruction level.
 	 * <p>Analogous to {@code <aop:scoped-proxy/>} support in Spring XML.
 	 * @see ScopedProxyMode
+	 * proxyMode=ScopedProxyMode.INTERFACES创建一个JDK代理模式
+	 * proxyMode=ScopedProxyMode.TARGET_CLASS基于类的代理模式
+	 * proxyMode=ScopedProxyMode.NO（默认）不进行代理
 	 */
 	ScopedProxyMode proxyMode() default ScopedProxyMode.DEFAULT;
 

@@ -133,14 +133,18 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @param parent the parent context
 	 * @throws BeansException if context creation failed
 	 * @see #refresh()
+	 *
+	 * 通过构造 ClassPathXmlApplicationContext 构建Spring容器
 	 */
 	public ClassPathXmlApplicationContext(
 			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
 			throws BeansException {
 
+		// 设置父容器，并合并父容器的环境变量
 		super(parent);
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// AbstractApplicationContext refresh 方法初始化容器
 			refresh();
 		}
 	}

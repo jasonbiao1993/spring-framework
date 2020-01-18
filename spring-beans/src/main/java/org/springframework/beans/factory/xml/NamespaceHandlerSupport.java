@@ -98,6 +98,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	public BeanDefinitionHolder decorate(
 			Node node, BeanDefinitionHolder definition, ParserContext parserContext) {
 
+		// 查找装饰器
 		BeanDefinitionDecorator decorator = findDecoratorForNode(node, parserContext);
 		return (decorator != null ? decorator.decorate(node, definition, parserContext) : null);
 	}

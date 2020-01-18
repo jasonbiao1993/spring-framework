@@ -108,6 +108,7 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 
 	@Override
 	public final BeanDefinitionRegistry getRegistry() {
+		// BeanFactory 实现了BeanDefinitionRegistry 类，并构建BeanDefinition时传入此对象
 		return this.registry;
 	}
 
@@ -183,6 +184,7 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 	public int loadBeanDefinitions(Resource... resources) throws BeanDefinitionStoreException {
 		Assert.notNull(resources, "Resource array must not be null");
 		int counter = 0;
+		// 循环加载xml，定义BeanDefinition对象
 		for (Resource resource : resources) {
 			counter += loadBeanDefinitions(resource);
 		}

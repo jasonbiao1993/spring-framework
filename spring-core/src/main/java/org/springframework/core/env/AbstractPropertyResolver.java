@@ -32,11 +32,13 @@ import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
 
 /**
- * Abstract base class for resolving properties against any underlying source.
+ * abstract base class for resolving properties against any underlying source.
  *
  * @author Chris Beams
  * @author Juergen Hoeller
  * @since 3.1
+ *
+ * 解析属性抽象类
  */
 public abstract class AbstractPropertyResolver implements ConfigurablePropertyResolver {
 
