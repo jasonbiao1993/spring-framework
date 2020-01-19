@@ -567,6 +567,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Initialize other special beans in specific context subclasses.
 				// 在特定上下文子类中初始化其他特殊bean。
+				// 模版模式
 				onRefresh();
 
 				// Check for listener beans and register them.

@@ -353,6 +353,7 @@ class ConstructorResolver {
 	 * @param explicitArgs argument values passed in programmatically via the getBean
 	 * method, or {@code null} if none (-> use constructor argument values from bean definition)
 	 * @return a BeanWrapper for the new instance
+	 * 实例化通过工厂方法
 	 */
 	public BeanWrapper instantiateUsingFactoryMethod(
 			String beanName, RootBeanDefinition mbd, @Nullable Object[] explicitArgs) {
@@ -491,6 +492,7 @@ class ConstructorResolver {
 					int typeDiffWeight = (mbd.isLenientConstructorResolution() ?
 							argsHolder.getTypeDifferenceWeight(paramTypes) : argsHolder.getAssignabilityWeight(paramTypes));
 					// Choose this factory method if it represents the closest match.
+					// 选择最匹配的工厂方法
 					if (typeDiffWeight < minTypeDiffWeight) {
 						factoryMethodToUse = candidate;
 						argsHolderToUse = argsHolder;
@@ -721,6 +723,7 @@ class ConstructorResolver {
 							"] - did you specify the correct bean references as arguments?");
 				}
 				try {
+					// 解析依赖Bean
 					Object autowiredArgument =
 							resolveAutowiredArgument(methodParam, beanName, autowiredBeanNames, converter);
 					args.rawArguments[paramIndex] = autowiredArgument;

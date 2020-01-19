@@ -236,6 +236,7 @@ class DisposableBeanAdapter implements DisposableBean, Runnable, Serializable {
 	@Override
 	public void destroy() {
 		if (!CollectionUtils.isEmpty(this.beanPostProcessors)) {
+			// 销毁感知后置处理器
 			for (DestructionAwareBeanPostProcessor processor : this.beanPostProcessors) {
 				processor.postProcessBeforeDestruction(this.bean, this.beanName);
 			}
@@ -382,8 +383,12 @@ class DisposableBeanAdapter implements DisposableBean, Runnable, Serializable {
 		if (bean instanceof DisposableBean || bean instanceof AutoCloseable) {
 			return true;
 		}
+
+		// 获取销毁方法，xml配置
 		String destroyMethodName = beanDefinition.getDestroyMethodName();
 		if (AbstractBeanDefinition.INFER_METHOD.equals(destroyMethodName)) {
+
+			// ClassUtils判断是否有次方法
 			return (ClassUtils.hasMethod(bean.getClass(), CLOSE_METHOD_NAME) ||
 					ClassUtils.hasMethod(bean.getClass(), SHUTDOWN_METHOD_NAME));
 		}

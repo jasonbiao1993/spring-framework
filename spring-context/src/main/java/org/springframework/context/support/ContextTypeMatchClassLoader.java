@@ -85,6 +85,12 @@ class ContextTypeMatchClassLoader extends DecoratingClassLoader implements Smart
 			super(parent);
 		}
 
+
+		/**
+		 * 是否允许覆盖
+		 * @param className the class name to check
+		 * @return
+		 */
 		@Override
 		protected boolean isEligibleForOverriding(String className) {
 			if (isExcluded(className) || ContextTypeMatchClassLoader.this.isExcluded(className)) {
