@@ -400,6 +400,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 		if (advice instanceof IntroductionInfo) {
 			// We don't need an IntroductionAdvisor for this kind of introduction:
 			// It's fully self-describing.
+			// 添加引入Advisor, 对应的引入方法
 			addAdvisor(pos, new DefaultIntroductionAdvisor(advice, (IntroductionInfo) advice));
 		}
 		else if (advice instanceof DynamicIntroductionAdvice) {

@@ -60,6 +60,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
+		// 有方法覆盖使用cglib代理
 		if (!bd.hasMethodOverrides()) {
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
@@ -116,6 +117,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 			}
 			return (args != null ? BeanUtils.instantiateClass(ctor, args) : BeanUtils.instantiateClass(ctor));
 		}
+		// 存在 lookup-method 和 replaced-method 标签，通过cglib实现拦截实现方法替换
 		else {
 			return instantiateWithMethodInjection(bd, beanName, owner, ctor, args);
 		}

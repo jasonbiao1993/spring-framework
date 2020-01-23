@@ -71,6 +71,10 @@ public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLo
 	}
 
 
+	/**
+	 * 通过类加载器获取不同的织入
+	 * @param classLoader the owning class loader
+	 */
 	@Override
 	public void setBeanClassLoader(ClassLoader classLoader) {
 		LoadTimeWeaver serverSpecificLoadTimeWeaver = createServerSpecificLoadTimeWeaver(classLoader);
@@ -87,6 +91,7 @@ public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLo
 		}
 		else {
 			try {
+				// 通过反射的方式启动是加载类
 				this.loadTimeWeaver = new ReflectiveLoadTimeWeaver(classLoader);
 				if (logger.isInfoEnabled()) {
 					logger.info("Using a reflective load-time weaver for class loader: " +

@@ -28,6 +28,11 @@ import org.aopalliance.intercept.MethodInterceptor;
  *
  * @author Rod Johnson
  * @see DynamicIntroductionAdvice
+ *
+ * Introduction（引入）是个特别的Advice，类通过实现AOP中的org.springframework.aop.IntroductionInterceptor在不改变原有方法的基础上却可以增加新的方法。
+ * IntroductionInterceptor继承了MethodInterceptor和DynamicIntroductionAdvice接口，其中implementsInterface()方法（继承自DynamicIntroductionAdvice）
+ * 如果返回true，表示目前的 IntroductionInterceptor实现了给定的接口（也就是要额外增加行为的接口），此时要使用invoke()调用该接口上的方法，让目标执行额外的行为。
+ * 需要注意的是不可能使用MethodInvocation的proceed()方法，因为要执行的是类原来没有的行为，proceed()方法没有意义。
  */
 public interface IntroductionInterceptor extends MethodInterceptor, DynamicIntroductionAdvice {
 

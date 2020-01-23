@@ -51,6 +51,8 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * @author Adrian Colyer
  * @author Juergen Hoeller
  * @since 2.0
+ *
+ * xml 方式Aop处理
  */
 public class AopNamespaceHandler extends NamespaceHandlerSupport {
 

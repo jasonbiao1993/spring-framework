@@ -110,7 +110,7 @@ public class ReflectiveLoadTimeWeaver implements LoadTimeWeaver {
 
 		Method getThrowawayClassLoaderMethod = ClassUtils.getMethodIfAvailable(
 				this.classLoader.getClass(), GET_THROWAWAY_CLASS_LOADER_METHOD_NAME);
-		// getThrowawayClassLoader method is optional
+		// getThrowawayClassLoader method is optiona
 		if (getThrowawayClassLoaderMethod == null) {
 			if (logger.isInfoEnabled()) {
 				logger.info("The ClassLoader [" + classLoader.getClass().getName() + "] does NOT provide a " +

@@ -36,7 +36,7 @@ import org.springframework.util.ClassUtils;
  * <p>Allows subclasses to conveniently add all interfaces from a given object,
  * and to suppress interfaces that should not be added. Also allows for querying
  * all introduced interfaces.
- *
+ * 允许子类方便地添加给定对象的所有接口，并禁止不应添加的接口。还允许查询*所有引入的接口。
  * @author Rod Johnson
  * @author Juergen Hoeller
  */

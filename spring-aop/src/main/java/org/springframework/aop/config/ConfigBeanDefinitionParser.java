@@ -99,21 +99,67 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
+		// 复合组件定义
 		CompositeComponentDefinition compositeDef =
 				new CompositeComponentDefinition(element.getTagName(), parserContext.extractSource(element));
 		parserContext.pushContainingComponent(compositeDef);
 
+		// 创建代理类 AspectJAwareAdvisorAutoProxyCreator
 		configureAutoProxyCreator(parserContext, element);
 
 		List<Element> childElts = DomUtils.getChildElements(element);
 		for (Element elt: childElts) {
 			String localName = parserContext.getDelegate().getLocalName(elt);
+			// 拦截点， AspectJExpressionPointcut
 			if (POINTCUT.equals(localName)) {
 				parsePointcut(elt, parserContext);
 			}
+			// <aop:advisor advice-ref="sleepHelper" pointcut-ref="sleepPointcut"/>
+			// 拦截观察者，advice-ref 需要实现对应的通知接口，例如：MethodBeforeAdvice
+			// 对应的处理类 DefaultBeanFactoryPointcutAdvisor
 			else if (ADVISOR.equals(localName)) {
 				parseAdvisor(elt, parserContext);
 			}
+			// 切面定义，几种通知类型
+			// <aop:aspect ref="sleepHelperAspect">
+			//  <!--前置通知-->
+			//  <aop:before method="beforeSleep" pointcut-ref="sleepPointcut"/>
+			//  <!--后置通知-->
+			//  <aop:after method="afterSleep" pointcut-ref="sleepPointcut"/>
+			// </aop:aspect>
+			// 自定对应的方法，不用实现对应的接口即可
+			/**
+			 * 解析结构
+			 * AspectComponentDefinition
+			 *     beanRefArray
+			 *         RuntimeBeanReference(aop:aspect的ref属性)
+			 *     beanDefArray
+			 *         // 被注册
+			 *         RootBeanDefinition(aop:declare-parents)
+			 *             beanClass: DeclareParentsAdvisor
+			 *             ConstructorArg
+			 *                 implement-interface
+			 *                 types-matching
+			 *                 default-impl
+			 *                 delegate-ref
+			 *         // 被注册
+			 *         RootBeanDefinition(aop:before,aop:after...)
+			 *             beanClass: AspectJPointcutAdvisor
+			 *             ConstructorArg
+			 *                 RootBeanDefinition
+			 *                     beanClass: 由子标签决定
+			 *                     ConstructorArg
+			 *                         RootBeanDefinition
+			 *                             beanClass: MethodLocatingFactoryBean
+			 *                             properties
+			 *                                 targetBeanName: aspectName
+			 *                                 methodName: method属性
+			 *                         RootBeanDefinition
+			 *                             beanClass: SimpleBeanFactoryAwareAspectInstanceFactory
+			 *                             properties
+			 *                                 aspectBeanName: aspectName
+			 *                         //还有pointcut定义和引用...
+			 */
 			else if (ASPECT.equals(localName)) {
 				parseAspect(elt, parserContext);
 			}
@@ -153,11 +199,13 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			}
 
 			Object pointcut = parsePointcutProperty(advisorElement, parserContext);
+			// 存在切点子节点
 			if (pointcut instanceof BeanDefinition) {
 				advisorDef.getPropertyValues().add(POINTCUT, pointcut);
 				parserContext.registerComponent(
 						new AdvisorComponentDefinition(advisorBeanName, advisorDef, (BeanDefinition) pointcut));
 			}
+			// ref 参考节点
 			else if (pointcut instanceof String) {
 				advisorDef.getPropertyValues().add(POINTCUT, new RuntimeBeanReference((String) pointcut));
 				parserContext.registerComponent(
@@ -366,6 +414,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			RootBeanDefinition methodDef, RootBeanDefinition aspectFactoryDef,
 			List<BeanDefinition> beanDefinitions, List<BeanReference> beanReferences) {
 
+		// 设置增强类
 		RootBeanDefinition adviceDefinition = new RootBeanDefinition(getAdviceClass(adviceElement, parserContext));
 		adviceDefinition.setSource(parserContext.extractSource(adviceElement));
 
@@ -505,9 +554,12 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	 * the supplied pointcut expression.
 	 */
 	protected AbstractBeanDefinition createPointcutDefinition(String expression) {
+		// 创建拦截切面类
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(AspectJExpressionPointcut.class);
 		beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
+		// 是否是合成，很重要，创建Bean的时候回判断
 		beanDefinition.setSynthetic(true);
+		// getPropertyValues属性，用于扩展使用，设置表达式，用于切面使用
 		beanDefinition.getPropertyValues().add(EXPRESSION, expression);
 		return beanDefinition;
 	}

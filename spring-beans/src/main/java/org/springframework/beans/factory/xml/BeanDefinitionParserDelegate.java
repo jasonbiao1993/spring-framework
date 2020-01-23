@@ -1391,6 +1391,7 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		// 通过 "META-INF/spring.handlers" 配置处理器， 且通过命令空间获取对应的处理器
+		// 1. xml 方式 Spring Aop 处理类 AopNamespaceHandler
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);
@@ -1455,6 +1456,7 @@ public class BeanDefinitionParserDelegate {
 		if (namespaceUri != null && !isDefaultNamespace(namespaceUri)) {
 			NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 			if (handler != null) {
+				// 装饰器，aop:scoped-proxy 标签
 				BeanDefinitionHolder decorated =
 						handler.decorate(node, originalDef, new ParserContext(this.readerContext, this, containingBd));
 				if (decorated != null) {

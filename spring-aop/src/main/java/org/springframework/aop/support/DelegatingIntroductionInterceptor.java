@@ -56,6 +56,7 @@ public class DelegatingIntroductionInterceptor extends IntroductionInfoSupport
 	/**
 	 * Object that actually implements the interfaces.
 	 * May be "this" if a subclass implements the introduced interfaces.
+	 * 委托类
 	 */
 	@Nullable
 	private Object delegate;
@@ -91,6 +92,7 @@ public class DelegatingIntroductionInterceptor extends IntroductionInfoSupport
 		implementInterfacesOnObject(delegate);
 
 		// We don't want to expose the control interface
+		// 我们不想公开控制界面
 		suppressInterface(IntroductionInterceptor.class);
 		suppressInterface(DynamicIntroductionAdvice.class);
 	}
@@ -104,10 +106,12 @@ public class DelegatingIntroductionInterceptor extends IntroductionInfoSupport
 	@Override
 	@Nullable
 	public Object invoke(MethodInvocation mi) throws Throwable {
+		// 是否是引入方法
 		if (isMethodOnIntroducedInterface(mi)) {
 			// Using the following method rather than direct reflection, we
 			// get correct handling of InvocationTargetException
 			// if the introduced method throws an exception.
+			// 调用方法，通过反射方式
 			Object retVal = AopUtils.invokeJoinpointUsingReflection(this.delegate, mi.getMethod(), mi.getArguments());
 
 			// Massage return value if possible: if the delegate returned itself,

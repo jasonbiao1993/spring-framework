@@ -77,12 +77,16 @@ public class ScopedProxyFactoryBean extends ProxyConfig
 
 	/**
 	 * Set the name of the bean that is to be scoped.
+	 * 设置将要作用域的Bean的名称。
 	 */
 	public void setTargetBeanName(String targetBeanName) {
 		this.targetBeanName = targetBeanName;
 		this.scopedTargetSource.setTargetBeanName(targetBeanName);
 	}
 
+	/**
+	 * 创建代理类
+	 */
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {
 		if (!(beanFactory instanceof ConfigurableBeanFactory)) {
@@ -107,11 +111,15 @@ public class ScopedProxyFactoryBean extends ProxyConfig
 		}
 
 		// Add an introduction that implements only the methods on ScopedObject.
+		// 通过ScopedObject控制Bean的生命周期
 		ScopedObject scopedObject = new DefaultScopedObject(cbf, this.scopedTargetSource.getTargetBeanName());
 		pf.addAdvice(new DelegatingIntroductionInterceptor(scopedObject));
 
 		// Add the AopInfrastructureBean marker to indicate that the scoped proxy
 		// itself is not subject to auto-proxying! Only its target bean is.
+		// 添加AopInfrastructureBean标记以指示作用域代理
+		// 本身不受自动代理！只有它的目标bean是。
+		// 标记为基础设施类，方便判断排除代理此类
 		pf.addInterface(AopInfrastructureBean.class);
 
 		this.proxy = pf.getProxy(cbf.getBeanClassLoader());

@@ -35,6 +35,8 @@ import org.aopalliance.aop.Advice;
  * @since 1.1.1
  * @see IntroductionInfo
  * @see IntroductionAdvisor
+ *
+ * 动态引入增强，判断是否应该引入增强
  */
 public interface DynamicIntroductionAdvice extends Advice {
 
