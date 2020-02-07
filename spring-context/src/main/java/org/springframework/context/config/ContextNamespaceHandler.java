@@ -27,6 +27,11 @@ import org.springframework.context.annotation.ComponentScanBeanDefinitionParser;
  * @author Mark Fisher
  * @author Juergen Hoeller
  * @since 2.5
+ *
+ * annotation-config 注解驱动配置
+ * load-time-weaver 启动类加载配置
+ * property-placeholde 属性占位符匹配
+ *
  */
 public class ContextNamespaceHandler extends NamespaceHandlerSupport {
 

@@ -76,6 +76,9 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 	}
 
 
+	/**
+	 * 在单例Bean初始化后最后执行
+	 */
 	@Override
 	public void afterSingletonsInstantiated() {
 		List<EventListenerFactory> factories = getEventListenerFactories();

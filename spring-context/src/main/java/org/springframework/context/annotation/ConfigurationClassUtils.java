@@ -60,6 +60,7 @@ abstract class ConfigurationClassUtils {
 
 	private static final Log logger = LogFactory.getLog(ConfigurationClassUtils.class);
 
+	// 候选指标
 	private static final Set<String> candidateIndicators = new HashSet<>(8);
 
 	static {

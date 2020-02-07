@@ -43,6 +43,8 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.core.Ordered
  * @see org.springframework.core.annotation.Order
  * @see javax.annotation.Priority
+ *
+ * 比较配置的加载顺序
  */
 public class AnnotationAwareOrderComparator extends OrderComparator {
 

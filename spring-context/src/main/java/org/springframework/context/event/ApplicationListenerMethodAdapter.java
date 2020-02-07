@@ -104,6 +104,7 @@ public class ApplicationListenerMethodAdapter implements GenericApplicationListe
 					"Maximum one parameter is allowed for event listener method: " + method);
 		}
 
+		// 如果注解类存在classes参数，使用classes 参数
 		if (ann != null) {
 			Class<?>[] classes = ann.classes();
 			if (classes.length > 0) {

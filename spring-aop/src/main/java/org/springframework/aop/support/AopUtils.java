@@ -195,6 +195,7 @@ public abstract class AopUtils {
 		Class<?> specificTargetClass = (targetClass != null ? ClassUtils.getUserClass(targetClass) : null);
 		Method resolvedMethod = ClassUtils.getMostSpecificMethod(method, specificTargetClass);
 		// If we are dealing with method with generic parameters, find the original method.
+		// 如果我们要处理具有泛型参数的方法，请找到原始方法。
 		return BridgeMethodResolver.findBridgedMethod(resolvedMethod);
 	}
 

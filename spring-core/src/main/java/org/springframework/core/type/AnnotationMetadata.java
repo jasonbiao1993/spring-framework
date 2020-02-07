@@ -47,7 +47,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * type to look for
 	 * @return the meta-annotation type names, or an empty set if none found
 	 */
-	Set<String> getMetaAnnotationTypes(String annotationName);
+		Set<String> getMetaAnnotationTypes(String annotationName);
 
 	/**
 	 * Determine whether an annotation of the given type is <em>present</em> on
