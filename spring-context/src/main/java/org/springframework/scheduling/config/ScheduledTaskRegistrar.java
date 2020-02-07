@@ -342,6 +342,8 @@ public class ScheduledTaskRegistrar implements ScheduledTaskHolder, Initializing
 			this.localExecutor = Executors.newSingleThreadScheduledExecutor();
 			this.taskScheduler = new ConcurrentTaskScheduler(this.localExecutor);
 		}
+
+		// 添加任务，并触发任务
 		if (this.triggerTasks != null) {
 			for (TriggerTask task : this.triggerTasks) {
 				addScheduledTask(scheduleTriggerTask(task));

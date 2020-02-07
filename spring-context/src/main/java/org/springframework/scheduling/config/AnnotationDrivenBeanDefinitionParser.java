@@ -70,6 +70,7 @@ public class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParse
 						"Only one AsyncAnnotationBeanPostProcessor may exist within the context.", source);
 			}
 			else {
+				// 设置异步处理执行线程池和拒绝策略处理
 				BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(
 						"org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor");
 				builder.getRawBeanDefinition().setSource(source);
@@ -93,6 +94,7 @@ public class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParse
 					"Only one ScheduledAnnotationBeanPostProcessor may exist within the context.", source);
 		}
 		else {
+			// 设置 scheduler
 			BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(
 					"org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor");
 			builder.getRawBeanDefinition().setSource(source);

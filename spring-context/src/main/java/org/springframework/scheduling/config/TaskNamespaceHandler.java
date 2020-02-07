@@ -20,7 +20,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 /**
  * {@code NamespaceHandler} for the 'task' namespace.
- *
+ * 定时任务处理处理
  * @author Mark Fisher
  * @since 3.0
  */
@@ -29,8 +29,13 @@ public class TaskNamespaceHandler extends NamespaceHandlerSupport {
 	@Override
 	public void init() {
 		this.registerBeanDefinitionParser("annotation-driven", new AnnotationDrivenBeanDefinitionParser());
+		// 设置线程池执行器底层是 ThreadPoolExecutor
 		this.registerBeanDefinitionParser("executor", new ExecutorBeanDefinitionParser());
+
+		// 设置scheduled-tasks 任务，并确定定时任务线程池
 		this.registerBeanDefinitionParser("scheduled-tasks", new ScheduledTasksBeanDefinitionParser());
+
+		// 设置定时任务线程池 底层是 ScheduledThreadPoolExecutor
 		this.registerBeanDefinitionParser("scheduler", new SchedulerBeanDefinitionParser());
 	}
 
