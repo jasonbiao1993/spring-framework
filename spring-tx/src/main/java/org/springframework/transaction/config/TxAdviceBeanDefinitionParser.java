@@ -66,6 +66,11 @@ class TxAdviceBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 	private static final String NO_ROLLBACK_FOR_ATTRIBUTE = "no-rollback-for";
 
 
+	/**
+	 * 拦截器类 最终继承MethodInterceptor, 最终判断哪些方法需要拦截处理
+	 * @param element the {@code Element} that is being parsed
+	 * @return
+	 */
 	@Override
 	protected Class<?> getBeanClass(Element element) {
 		return TransactionInterceptor.class;

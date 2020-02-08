@@ -43,6 +43,7 @@ public class InfrastructureAdvisorAutoProxyCreator extends AbstractAdvisorAutoPr
 	@Override
 	protected boolean isEligibleAdvisorBean(String beanName) {
 		return (this.beanFactory != null && this.beanFactory.containsBeanDefinition(beanName) &&
+				// 基础设施类切面增强处理
 				this.beanFactory.getBeanDefinition(beanName).getRole() == BeanDefinition.ROLE_INFRASTRUCTURE);
 	}
 

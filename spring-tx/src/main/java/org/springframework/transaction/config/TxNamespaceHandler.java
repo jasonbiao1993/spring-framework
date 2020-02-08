@@ -36,6 +36,8 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @since 2.0
+ *
+ * 事务xml解析器
  */
 public class TxNamespaceHandler extends NamespaceHandlerSupport {
 
@@ -52,6 +54,7 @@ public class TxNamespaceHandler extends NamespaceHandlerSupport {
 
 	@Override
 	public void init() {
+		// 设置事务增强的方法
 		registerBeanDefinitionParser("advice", new TxAdviceBeanDefinitionParser());
 		registerBeanDefinitionParser("annotation-driven", new AnnotationDrivenBeanDefinitionParser());
 		registerBeanDefinitionParser("jta-transaction-manager", new JtaTransactionManagerBeanDefinitionParser());

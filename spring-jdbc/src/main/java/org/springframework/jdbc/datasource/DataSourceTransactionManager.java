@@ -180,6 +180,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 	 * @return the DataSource (never {@code null})
 	 * @throws IllegalStateException in case of no DataSource set
 	 * @since 5.0
+	 * 获取数据源
 	 */
 	protected DataSource obtainDataSource() {
 		DataSource dataSource = getDataSource();
@@ -204,6 +205,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 	 * this strong enforcement needs to be applied explicitly, e.g. through this flag.
 	 * @since 4.3.7
 	 * @see #prepareTransactionalConnection
+	 * 设置执行只读
 	 */
 	public void setEnforceReadOnly(boolean enforceReadOnly) {
 		this.enforceReadOnly = enforceReadOnly;
@@ -237,6 +239,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		DataSourceTransactionObject txObject = new DataSourceTransactionObject();
 		txObject.setSavepointAllowed(isNestedTransactionAllowed());
 		ConnectionHolder conHolder =
+				// 事务同步管理器
 				(ConnectionHolder) TransactionSynchronizationManager.getResource(obtainDataSource());
 		txObject.setConnectionHolder(conHolder, false);
 		return txObject;

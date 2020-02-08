@@ -99,10 +99,12 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 
 	/**
 	 * Inner class to just introduce an AOP framework dependency when actually in proxy mode.
+	 * 事务注解驱动代理实现，通过注册后置处理器创建代理
 	 */
 	private static class AopAutoProxyConfigurer {
 
 		public static void configureAutoProxyCreator(Element element, ParserContext parserContext) {
+			// 注册自动代理实现类
 			AopNamespaceUtils.registerAutoProxyCreatorIfNecessary(parserContext, element);
 
 			String txAdvisorBeanName = TransactionManagementConfigUtils.TRANSACTION_ADVISOR_BEAN_NAME;
