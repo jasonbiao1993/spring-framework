@@ -1,0 +1,26 @@
+# 参数解析和结果转换
+Spring MVC中参数到各种类型的转换由HandlerMethodArgumentResolver接口完成，而Controller返回值到真正的响应的转换由HandlerMethodReturnValueHandler接口完成。两者分别负责Spring MVC中数据的输入与输出，可用下图表示:
+* Spring MVC 输入转换
+> HandlerMethodArgumentResolver接口实现类
+* Spring MVC 输出转换
+> HandlerMethodReturnValueHandler接口实现类
+
+其实有很多类同时实现了两个接口，比如RequestResponseBodyMethodProcessor，这样的类一般以Processor结尾。
+
+两种转换器的初始化由HandlerAdapter完成，这也很好的体现了HandlerAdapter接口的功能。
+以喜闻乐见的RequestMappingHandlerAdapter为例，其初始化的HandlerMethodReturnValueHandler列表如下:
+* ModelAndViewMethodReturnValueHandler
+* ModelMethodProcessor
+* HttpEntityMethodProcessor
+* HttpHeadersReturnValueHandler
+* CallableMethodReturnValueHandler
+* DeferredResultMethodReturnValueHandler
+* AsyncTaskMethodReturnValueHandler
+* ListenableFutureReturnValueHandler
+* ModelAttributeMethodProcessor
+* RequestResponseBodyMethodProcessor
+* ViewNameMethodReturnValueHandler
+* MapMethodProcessor
+* ModelAndViewResolverMethodReturnValueHandler
+从中也可以推测出我们可以把哪些类型的值(对象)直接"丢给"Spring。
+对于HandlerMethodArgumentResolver和HandlerMethodReturnValueHandler来说，HttpMessageConverter像是两者手中用来实现功能的武器。

@@ -42,6 +42,9 @@ import org.springframework.lang.Nullable;
  * @author Rossen Stoyanchev
  * @see org.springframework.web.servlet.view.AbstractView
  * @see org.springframework.web.servlet.view.InternalResourceView
+ *
+ * 通过不同的视图组件进行渲染
+ * 例如JstlView 或者FreeMarkerViewResolver 等等去渲染
  */
 public interface View {
 

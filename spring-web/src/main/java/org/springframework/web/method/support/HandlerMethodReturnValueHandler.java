@@ -27,6 +27,10 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @author Arjen Poutsma
  * @since 3.1
  * @see HandlerMethodArgumentResolver
+ *
+ * 方法返回值解析处理
+ * 策略模式
+ * 通过实现该接口实现视图解析
  */
 public interface HandlerMethodReturnValueHandler {
 

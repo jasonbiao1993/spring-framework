@@ -392,6 +392,7 @@ public class ContextLoader {
 		}
 
 		wac.setServletContext(sc);
+		// 设置解析文件路径，用于解析spring容器类
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
 			wac.setConfigLocation(configLocationParam);
@@ -406,6 +407,7 @@ public class ContextLoader {
 		}
 
 		customizeContext(sc, wac);
+		// 开始刷新容器
 		wac.refresh();
 	}
 

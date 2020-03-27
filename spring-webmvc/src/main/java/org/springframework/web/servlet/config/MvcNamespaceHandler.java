@@ -26,13 +26,17 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * @author Jeremy Grelle
  * @author Sebastien Deleuze
  * @since 3.0
+ * spring mvc xml配置解析类配置
  */
 public class MvcNamespaceHandler extends NamespaceHandlerSupport {
 
 	@Override
 	public void init() {
+		// HandlerMapping HandlerAdapter等的注册
 		registerBeanDefinitionParser("annotation-driven", new AnnotationDrivenBeanDefinitionParser());
+		// DefaultServletHttpRequestHandler SimpleUrlHandlerMapping  SimpleUrlHandlerMapping 注册
 		registerBeanDefinitionParser("default-servlet-handler", new DefaultServletHandlerBeanDefinitionParser());
+		// 拦截器的注册
 		registerBeanDefinitionParser("interceptors", new InterceptorsBeanDefinitionParser());
 		registerBeanDefinitionParser("resources", new ResourcesBeanDefinitionParser());
 		registerBeanDefinitionParser("view-controller", new ViewControllerBeanDefinitionParser());

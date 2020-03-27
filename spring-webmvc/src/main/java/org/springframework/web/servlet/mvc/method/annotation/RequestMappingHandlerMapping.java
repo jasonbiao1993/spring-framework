@@ -189,6 +189,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	@Override
 	@Nullable
 	protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+		// RequestMappingHandlerMapping 组装RequestMapping 信息
 		RequestMappingInfo info = createRequestMappingInfo(method);
 		if (info != null) {
 			RequestMappingInfo typeInfo = createRequestMappingInfo(handlerType);
@@ -326,7 +327,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 			return;
 		}
 		for (String origin : annotation.origins()) {
-			config.addAllowedOrigin(resolveCorsAnnotationValue(origin));
+				config.addAllowedOrigin(resolveCorsAnnotationValue(origin));
 		}
 		for (RequestMethod method : annotation.methods()) {
 			config.addAllowedMethod(method.name());

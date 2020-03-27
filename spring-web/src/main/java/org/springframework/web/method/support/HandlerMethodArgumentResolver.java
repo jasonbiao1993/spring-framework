@@ -29,6 +29,11 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @author Arjen Poutsma
  * @since 3.1
  * @see HandlerMethodReturnValueHandler
+ *
+ * 方法参数解析器
+ * 通过策略模式实现
+ * 我们可以通过实现HandlerMethodArgumentResolver接口并将其注册容器的方式实现自定义参数类型的解析。
+ * 为了防止出现参数名获取不到的问题，应优先使用@RequestParam注解直接声明需要的参数名称。
  */
 public interface HandlerMethodArgumentResolver {
 
@@ -38,6 +43,8 @@ public interface HandlerMethodArgumentResolver {
 	 * @param parameter the method parameter to check
 	 * @return {@code true} if this resolver supports the supplied parameter;
 	 * {@code false} otherwise
+	 *
+	 * 是否支持此参数的解析
 	 */
 	boolean supportsParameter(MethodParameter parameter);
 
@@ -55,6 +62,8 @@ public interface HandlerMethodArgumentResolver {
 	 * @param binderFactory a factory for creating {@link WebDataBinder} instances
 	 * @return the resolved argument value, or {@code null} if not resolvable
 	 * @throws Exception in case of errors with the preparation of argument values
+	 *
+	 * 解析参数得到参数的值
 	 */
 	@Nullable
 	Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,

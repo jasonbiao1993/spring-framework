@@ -239,7 +239,9 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	 */
 	@Override
 	protected void initApplicationContext() throws BeansException {
+		// 扩展拦截器配置
 		extendInterceptors(this.interceptors);
+		// 添加所有的拦截器配置
 		detectMappedInterceptors(this.adaptedInterceptors);
 		initInterceptors();
 	}
@@ -264,6 +266,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	 * @param mappedInterceptors an empty list to add {@link MappedInterceptor} instances to
 	 */
 	protected void detectMappedInterceptors(List<HandlerInterceptor> mappedInterceptors) {
+		// 添加拦截器
 		mappedInterceptors.addAll(
 				BeanFactoryUtils.beansOfTypeIncludingAncestors(
 						obtainApplicationContext(), MappedInterceptor.class, true, false).values());
@@ -282,6 +285,8 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 				if (interceptor == null) {
 					throw new IllegalArgumentException("Entry number " + i + " in interceptors array is null");
 				}
+
+				// 拦截器适配
 				this.adaptedInterceptors.add(adaptInterceptor(interceptor));
 			}
 		}
@@ -360,7 +365,9 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 			handler = obtainApplicationContext().getBean(handlerName);
 		}
 
+		// 获取执行器链
 		HandlerExecutionChain executionChain = getHandlerExecutionChain(handler, request);
+		// 是跨域请求，通过跨域设置，获取执行链
 		if (CorsUtils.isCorsRequest(request)) {
 			CorsConfiguration globalConfig = this.globalCorsConfigSource.getCorsConfiguration(request);
 			CorsConfiguration handlerConfig = getCorsConfiguration(handler, request);
