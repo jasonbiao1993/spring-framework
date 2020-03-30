@@ -54,6 +54,8 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
+		// 这里开始遍历上面三个内部类，如果属于BeanDefinitionRegistryPostProcessor 子类，
+		// 加入到bean注册的集合，否则加入到 regularPostProcessors中，从名字可以看出是有规律集合。
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
@@ -79,11 +81,14 @@ final class PostProcessorRegistrationDelegate {
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
 			// 获取注册的BeanDefinitionRegistryPostProcessors, 并排序
+			// PriorityOrdered类型表明为优先执行
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+					// 获取对应的bean
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+					// 用来存储已经执行过的`BeanDefinitionRegistryPostProcessor`
 					processedBeans.add(ppName);
 				}
 			}
@@ -95,6 +100,8 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
+			// 其次执行类型为Ordered的BeanDefinitionRegistryPostProcessor
+			// Ordered表明按顺序执行
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (!processedBeans.contains(ppName) && beanFactory.isTypeMatch(ppName, Ordered.class)) {
@@ -108,6 +115,7 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 
 			// finally, invoke all other beandefinitionregistrypostprocessors until no further ones appear.
+			// 循环中执行类型不为PriorityOrdered,Ordered类型的BeanDefinitionRegistryPostProcessor
 			boolean reiterate = true;
 			while (reiterate) {
 				reiterate = false;
@@ -126,7 +134,10 @@ final class PostProcessorRegistrationDelegate {
 			}
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+			// 执行父类方法，优先执行注册处理类
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
+
+			// 执行有规则处理类
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
 

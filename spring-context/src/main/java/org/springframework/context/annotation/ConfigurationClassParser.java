@@ -168,7 +168,7 @@ class ConfigurationClassParser {
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
-				// 注解配置 BeanDefinition
+				// 是否是注解类
 				if (bd instanceof AnnotatedBeanDefinition) {
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
@@ -248,6 +248,7 @@ class ConfigurationClassParser {
 		// 递归处理所有的父类
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
+			// 循环处理bean，如果有父类，则处理父类。直至结束。
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);
 		}
 		while (sourceClass != null);
@@ -269,6 +270,7 @@ class ConfigurationClassParser {
 
 		// Recursively process any member (nested) classes first
 		// 处理成员类，如果是配置类
+		// 处理内部类逻辑，由于传来的参数是我们的启动类，不含内部类，所以跳过。
 		processMemberClasses(configClass, sourceClass);
 
 		// Process any @PropertySource annotations
@@ -287,6 +289,7 @@ class ConfigurationClassParser {
 
 		// Process any @ComponentScan annotations
 		// 注解扫描
+		// 这里是根据@ComponentScan 注解来扫描项目中的bean
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
 		if (!componentScans.isEmpty() &&
@@ -298,6 +301,8 @@ class ConfigurationClassParser {
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
+
+				// 遍历我们项目中的bean，如果是@Configuration定义的bean，则进一步解析
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
 					BeanDefinition bdCand = holder.getBeanDefinition().getOriginatingBeanDefinition();
 					if (bdCand == null) {
@@ -312,6 +317,7 @@ class ConfigurationClassParser {
 
 		// Process any @Import annotations ImportSelector ImportBeanDefinitionRegister @Configuration的类
 		// 处理import注解，用于导入配置
+		// 这里又是一个递归解析，获取导入的配置类。很多情况下，导入的配置类中会同样包含导入类注解。
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
@@ -389,6 +395,7 @@ class ConfigurationClassParser {
 	 * Register default methods on interfaces implemented by the configuration class.
 	 */
 	private void processInterfaces(ConfigurationClass configClass, SourceClass sourceClass) throws IOException {
+		// 获取接口中的默认方法，1.8以上的处理逻辑
 		for (SourceClass ifc : sourceClass.getInterfaces()) {
 			// 获取接口中的方法，切不是抽象方法，则处理对应的Bean
 			Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(ifc);
@@ -569,6 +576,7 @@ class ConfigurationClassParser {
 		Map<AnnotationMetadata, ConfigurationClass> configurationClasses = new HashMap<>();
 		for (DeferredImportSelectorHolder deferredImport : deferredImports) {
 			Class<? extends Group> group = deferredImport.getImportSelector().getImportGroup();
+			// 计算是否不存在，创建，存在直接返回
 			DeferredImportSelectorGrouping grouping = groupings.computeIfAbsent(
 					(group != null ? group : deferredImport),
 					key -> new DeferredImportSelectorGrouping(createGroup(group)));
