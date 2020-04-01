@@ -115,6 +115,8 @@ import java.lang.annotation.Target;
  * @author Juergen Hoeller
  * @since 3.1
  * @see org.aspectj.lang.annotation.Aspect
+ *
+ * 开启Aspectj 自动代理
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
