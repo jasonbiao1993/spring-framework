@@ -109,6 +109,9 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 
 	/**
 	 * 可变的属性资源，Environment存值的地方
+	 * 这里的设计很巧妙，将MutablePropertySources传递到文件解析器propertyResolver中，
+	 * 同时AbstractEnvironment又实现了文件解析接口ConfigurablePropertyResolver,所以AbstractEnvironment就有了文件解析的功能。
+	 * 所以StandardServletEnvironment文件解析功能实际委托给了PropertySourcesPropertyResolver来实现。
 	 */
 	private final MutablePropertySources propertySources = new MutablePropertySources(this.logger);
 
