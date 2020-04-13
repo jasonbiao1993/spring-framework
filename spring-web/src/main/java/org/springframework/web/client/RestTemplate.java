@@ -682,11 +682,14 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 		Assert.notNull(method, "HttpMethod is required");
 		ClientHttpResponse response = null;
 		try {
+			// 1.创一个request请求
 			ClientHttpRequest request = createRequest(url, method);
 			if (requestCallback != null) {
 				requestCallback.doWithRequest(request);
 			}
+			// 2.执行该请求
 			response = request.execute();
+			// 3.对响应结果进行封装
 			handleResponse(url, method, response);
 			return (responseExtractor != null ? responseExtractor.extractData(response) : null);
 		}

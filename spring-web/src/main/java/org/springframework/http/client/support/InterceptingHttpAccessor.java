@@ -90,6 +90,7 @@ public abstract class InterceptingHttpAccessor extends HttpAccessor {
 	@Override
 	public ClientHttpRequestFactory getRequestFactory() {
 		List<ClientHttpRequestInterceptor> interceptors = getInterceptors();
+		// 拦截器不为empty,则进行包装执行
 		if (!CollectionUtils.isEmpty(interceptors)) {
 			ClientHttpRequestFactory factory = this.interceptingRequestFactory;
 			if (factory == null) {

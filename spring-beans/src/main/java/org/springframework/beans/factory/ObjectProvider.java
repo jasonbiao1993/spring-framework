@@ -40,6 +40,8 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * @return an instance of the bean
 	 * @throws BeansException in case of creation errors
 	 * @see #getObject()
+	 * 返回指定类型的bean, 如果容器中不存在, 抛出NoSuchBeanDefinitionException异常
+	 * 如果容器中有多个此类型的bean, 抛出NoUniqueBeanDefinitionException异常
 	 */
 	T getObject(Object... args) throws BeansException;
 
@@ -49,6 +51,8 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * @return an instance of the bean, or {@code null} if not available
 	 * @throws BeansException in case of creation errors
 	 * @see #getObject()
+	 *
+	 * 如果指定类型的bean注册到容器中, 返回 bean 实例, 否则返回 null
 	 */
 	@Nullable
 	T getIfAvailable() throws BeansException;
@@ -63,6 +67,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * @throws BeansException in case of creation errors
 	 * @since 5.0
 	 * @see #getIfAvailable()
+	 * 如果返回对象不存在，则进行回调，回调对象由Supplier传入
 	 */
 	default T getIfAvailable(Supplier<T> defaultSupplier) throws BeansException {
 		T dependency = getIfAvailable();
@@ -77,6 +82,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * @throws BeansException in case of creation errors
 	 * @since 5.0
 	 * @see #getIfAvailable()
+	 * 消费对象的一个实例（可能是共享的或独立的），如果存在通过Consumer回调消耗目标对象。
 	 */
 	default void ifAvailable(Consumer<T> dependencyConsumer) throws BeansException {
 		T dependency = getIfAvailable();
@@ -92,6 +98,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * not unique (i.e. multiple candidates found with none marked as primary)
 	 * @throws BeansException in case of creation errors
 	 * @see #getObject()
+	 * 如果不可用或不唯一（没有指定primary）则返回null。否则，返回对象。
 	 */
 	@Nullable
 	T getIfUnique() throws BeansException;
@@ -107,6 +114,8 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * @throws BeansException in case of creation errors
 	 * @since 5.0
 	 * @see #getIfUnique()
+	 *
+	 * 如果存在唯一对象，则调用Supplier的回调函数
 	 */
 	default T getIfUnique(Supplier<T> defaultSupplier) throws BeansException {
 		T dependency = getIfUnique();
@@ -121,6 +130,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * @throws BeansException in case of creation errors
 	 * @since 5.0
 	 * @see #getIfAvailable()
+	 * 如果存在唯一对象，则消耗掉该对象
 	 */
 	default void ifUnique(Consumer<T> dependencyConsumer) throws BeansException {
 		T dependency = getIfUnique();

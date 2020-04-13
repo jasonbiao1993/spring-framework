@@ -89,6 +89,7 @@ class InterceptingClientHttpRequest extends AbstractBufferingClientHttpRequest {
 		public ClientHttpResponse execute(HttpRequest request, byte[] body) throws IOException {
 			if (this.iterator.hasNext()) {
 				ClientHttpRequestInterceptor nextInterceptor = this.iterator.next();
+				// 这里依次处理拦截器，例如ribbon相关拦截器LoadBalancerInterceptor
 				return nextInterceptor.intercept(request, body, this);
 			}
 			else {
