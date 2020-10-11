@@ -60,6 +60,8 @@ import org.springframework.web.util.WebUtils;
  * identify that a request is already filtered. The default implementation is
  * based on the configured name of the concrete filter instance.
  *
+ * 仅执行一次的Filter
+ *
  * @author Juergen Hoeller
  * @author Rossen Stoyanchev
  * @since 06.12.2003
@@ -93,6 +95,7 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
 		String alreadyFilteredAttributeName = getAlreadyFilteredAttributeName();
+		// filter 在request的attribute状态设置为已执行，那么跳过改filter
 		boolean hasAlreadyFilteredAttribute = request.getAttribute(alreadyFilteredAttributeName) != null;
 
 		if (hasAlreadyFilteredAttribute || skipDispatch(httpRequest) || shouldNotFilter(httpRequest)) {
@@ -102,8 +105,10 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 		}
 		else {
 			// Do invoke this filter...
+			// 否则更改request的filter状态（防止内部请求继续执行过滤器）
 			request.setAttribute(alreadyFilteredAttributeName, Boolean.TRUE);
 			try {
+				// 执行filter逻辑
 				doFilterInternal(httpRequest, httpResponse, filterChain);
 			}
 			finally {

@@ -238,6 +238,7 @@ public abstract class GenericFilterBean implements Filter, BeanNameAware, Enviro
 		}
 
 		// Let subclasses do whatever initialization they like.
+		// 过滤器初始化方法，用于子类实现
 		initFilterBean();
 
 		if (logger.isDebugEnabled()) {
