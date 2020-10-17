@@ -28,6 +28,8 @@ import org.springframework.web.server.ServerWebExchange;
  *
  * @author Rossen Stoyanchev
  * @since 5.0
+ *
+ * 用于Spring MVC数据绑定操作
  */
 public interface HandlerMethodArgumentResolver {
 

@@ -78,6 +78,13 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * @see #DelegatingFilterProxy(String, WebApplicationContext)
  * @see javax.servlet.ServletContext#addFilter(String, Filter)
  * @see org.springframework.web.WebApplicationInitializer
+ *
+ * 委托代理 Spring Security
+ * DelegatingFilterProxy 是 SpringSecurity 的“门面”，注意它的包结构：org.springframework.web.filter，
+ * 它本身是 Spring Web 包中的类，并不是 SpringSecurity 中的类。因为 Spring 考虑到了多种使用场景，自然希望将侵入性降到最低，
+ * 所以使用了这个委托代理类来代理真正的 SpringSecurityFilterChain。
+ * DelegatingFilterProxy 实现了 javax.servlet.Filter 接口，使得它可以作为一个 java web 的标准过滤器，其职责也很简单，
+ * 只负责调用真正的 SpringSecurityFilterChain。
  */
 public class DelegatingFilterProxy extends GenericFilterBean {
 
@@ -250,6 +257,8 @@ public class DelegatingFilterProxy extends GenericFilterBean {
 			throws ServletException, IOException {
 
 		// Lazily initialize the delegate if necessary.
+
+		// 过滤器代理支持懒加载
 		Filter delegateToUse = this.delegate;
 		if (delegateToUse == null) {
 			synchronized (this.delegateMonitor) {
@@ -267,6 +276,7 @@ public class DelegatingFilterProxy extends GenericFilterBean {
 		}
 
 		// Let the delegate perform the actual doFilter operation.
+		// 让代理过滤器执行实际的过滤行为
 		invokeDelegate(delegateToUse, request, response, filterChain);
 	}
 
@@ -330,6 +340,7 @@ public class DelegatingFilterProxy extends GenericFilterBean {
 	 * @see #isTargetFilterLifecycle()
 	 * @see #getFilterConfig()
 	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
+	 * 初始化过滤器代理
 	 */
 	protected Filter initDelegate(WebApplicationContext wac) throws ServletException {
 		String targetBeanName = getTargetBeanName();
@@ -349,6 +360,7 @@ public class DelegatingFilterProxy extends GenericFilterBean {
 	 * @param filterChain the current FilterChain
 	 * @throws ServletException if thrown by the Filter
 	 * @throws IOException if thrown by the Filter
+	 * 调用代理过滤器
 	 */
 	protected void invokeDelegate(
 			Filter delegate, ServletRequest request, ServletResponse response, FilterChain filterChain)
